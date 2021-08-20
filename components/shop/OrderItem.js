@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, Text, Button, View } from "react-native";
 import CartItem from "./CartItem";
 import Colors from "../../constants/Colors";
 
 const OrderItem = (props) => {
+    const [showDetails, setShowDetails] = useState(false);
     return (
         <View style={styles.orderItem}>
             <View style={styles.summury}>
@@ -12,7 +13,25 @@ const OrderItem = (props) => {
                 </Text>
                 <Text style={styles.date}>{props.date}</Text>
             </View>
-            <Button color={Colors.primary} title={"Show Details"} />
+            <Button
+                color={Colors.primary}
+                title={showDetails ? "Hide details" : "Show Details"}
+                onPress={() => {
+                    setShowDetails((prevState) => !prevState);
+                }}
+            />
+            {showDetails && (
+                <View style={styles.detailItems}>
+                    {props.items.map((cartItem) => (
+                        <CartItem
+                            key={cartItem.productId}
+                            quantity={cartItem.quantity}
+                            amount={cartItem.sum}
+                            title={cartItem.productTitle}
+                        />
+                    ))}
+                </View>
+            )}
         </View>
     );
 };
@@ -30,14 +49,17 @@ const styles = StyleSheet.create({
         backgroundColor: "white",
         margin: 20,
         padding: 10,
-        alignItems: 'center'
+        alignItems: "center",
+    },
+    detailItems: {
+        width: "100%",
     },
     summury: {
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
         width: "100%",
-        marginBottom: 15
+        marginBottom: 15,
     },
     totalAmount: {
         fontFamily: "open-sans-bold",

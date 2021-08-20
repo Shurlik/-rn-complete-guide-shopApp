@@ -1,6 +1,6 @@
 import React from "react";
-import { StyleSheet, Text, View, FlatList, Button } from "react-native";
-import { useSelector, useDispatch } from "react-redux";
+import {StyleSheet, Text, View, FlatList, Button} from "react-native";
+import {useSelector, useDispatch} from "react-redux";
 import CartItem from "../../components/shop/CartItem";
 import Colors from "../../constants/Colors";
 import * as cartActions from "../../store/actions/cart";
@@ -32,7 +32,7 @@ const CartScreen = (props) => {
                 <Text style={styles.summurText}>
                     Total:{" "}
                     <Text style={styles.amount}>
-                        ${cartTotalAmount.toFixed(2)}
+                        ${Math.round(cartTotalAmount.toFixed(2) * 100) / 100}
                     </Text>
                 </Text>
                 <Button
@@ -54,6 +54,7 @@ const CartScreen = (props) => {
                         quantity={itemData.item.quantity}
                         title={itemData.item.productTitle}
                         amount={itemData.item.sum}
+                        deletable
                         onRemove={() => {
                             dispatch(
                                 cartActions.removeFromCart(
@@ -86,7 +87,7 @@ const styles = StyleSheet.create({
         padding: 10,
         shadowColor: "black",
         shadowOpacity: 0.26,
-        shadowOffset: { width: 0, height: 2 },
+        shadowOffset: {width: 0, height: 2},
         shadowRadius: 10,
         elevation: 8,
         backgroundColor: "white",
