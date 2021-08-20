@@ -29,7 +29,7 @@ const CartScreen = (props) => {
     return (
         <View style={styles.screen}>
             <View style={styles.summary}>
-                <Text style={styles.summurText}>
+                <Text style={styles.summaryText}>
                     Total:{" "}
                     <Text style={styles.amount}>
                         ${Math.round(cartTotalAmount.toFixed(2) * 100) / 100}
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
         elevation: 8,
         backgroundColor: "white",
     },
-    summurText: {
+    summaryText: {
         fontFamily: "open-sans-bold",
         fontSize: 18,
     },
