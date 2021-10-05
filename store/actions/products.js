@@ -7,13 +7,15 @@ export const SET_PRODUCTS = "SET_PRODUCTS";
 
 export const fetchProducts = () => {
   return async (dispatch) => {
+    // any async code you want!
     try {
       const response = await fetch(
         "https://rn-complete-guide-87a28-default-rtdb.europe-west1.firebasedatabase.app/products.json"
       );
 
       if (!response.ok) {
-        throw new Error("Something went wrong");
+        console.log(response);
+        throw new Error("Something went wrong!");
       }
 
       const resData = await response.json();
@@ -34,18 +36,30 @@ export const fetchProducts = () => {
 
       dispatch({ type: SET_PRODUCTS, products: loadedProducts });
     } catch (err) {
-      //do smth
+      // send to custom analytics server
       throw err;
     }
   };
 };
-
 export const deleteProduct = (productId) => {
-  return { type: DELETE_PRODUCT, pid: productId };
+  return async (dispatch) => {
+    const response = await fetch(
+      `https://rn-complete-guide-87a28-default-rtdb.europe-west1.firebasedatabase.app/products/${productId}.json`,
+      {
+        method: "DELETE",
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Something went wrong!");
+    }
+    dispatch({ type: DELETE_PRODUCT, pid: productId });
+  };
 };
 
 export const createProduct = (title, description, imageUrl, price) => {
   return async (dispatch) => {
+    // any async code you want!
     const response = await fetch(
       "https://rn-complete-guide-87a28-default-rtdb.europe-west1.firebasedatabase.app/products.json",
       {
@@ -64,8 +78,6 @@ export const createProduct = (title, description, imageUrl, price) => {
 
     const resData = await response.json();
 
-    console.log(resData);
-
     dispatch({
       type: CREATE_PRODUCT,
       productData: {
@@ -80,14 +92,34 @@ export const createProduct = (title, description, imageUrl, price) => {
 };
 
 export const updateProduct = (id, title, description, imageUrl) => {
-  return {
-    type: UPDATE_PRODUCT,
-    pid: id,
-    productData: {
-      id,
-      title,
-      description,
-      imageUrl,
-    },
+  return async (dispatch) => {
+    const response = await fetch(
+      `https://rn-complete-guide-87a28-default-rtdb.europe-west1.firebasedatabase.app/products/${id}.json`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title,
+          description,
+          imageUrl,
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Something went wrong!");
+    }
+
+    dispatch({
+      type: UPDATE_PRODUCT,
+      pid: id,
+      productData: {
+        title,
+        description,
+        imageUrl,
+      },
+    });
   };
 };

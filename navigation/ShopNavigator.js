@@ -3,6 +3,7 @@ import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 import { createDrawerNavigator } from "react-navigation-drawer";
 import { Platform } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
 import ProductsOverviewScreen from "../screens/shop/ProductsOverviewScreen";
 import ProductDetailScreen from "../screens/shop/ProductDetailScreen";
@@ -11,7 +12,6 @@ import OrdersScreen from "../screens/shop/OrdersScreen";
 import UserProductsScreen from "../screens/user/UserProductsScreen";
 import EditProductScreen from "../screens/user/EditProductScreen";
 import Colors from "../constants/Colors";
-import { Ionicons } from "@expo/vector-icons";
 
 const defaultNavOptions = {
   headerStyle: {
@@ -37,7 +37,7 @@ const ProductsNavigator = createStackNavigator(
       drawerIcon: (drawerConfig) => (
         <Ionicons
           name={Platform.OS === "android" ? "md-cart" : "ios-cart"}
-          size={24}
+          size={23}
           color={drawerConfig.tintColor}
         />
       ),
@@ -55,7 +55,7 @@ const OrdersNavigator = createStackNavigator(
       drawerIcon: (drawerConfig) => (
         <Ionicons
           name={Platform.OS === "android" ? "md-list" : "ios-list"}
-          size={24}
+          size={23}
           color={drawerConfig.tintColor}
         />
       ),
@@ -74,7 +74,7 @@ const AdminNavigator = createStackNavigator(
       drawerIcon: (drawerConfig) => (
         <Ionicons
           name={Platform.OS === "android" ? "md-create" : "ios-create"}
-          size={24}
+          size={23}
           color={drawerConfig.tintColor}
         />
       ),
