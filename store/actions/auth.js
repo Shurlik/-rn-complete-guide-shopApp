@@ -1,4 +1,4 @@
-export const SIGNUP = "SIGNAUP";
+export const SIGNUP = "SIGNUP";
 export const LOGIN = "LOGIN";
 
 export const signup = (email, password) => {
@@ -17,16 +17,28 @@ export const signup = (email, password) => {
                 }),
             }
         );
-        console.log("signup", await response.json());
 
         if (!response.ok) {
-            throw new Error("Something went wrong!");
+            const errorResData = await response.json();
+            console.log("errorResData1---> \n", errorResData);
+            const errorId = errorResData.error.message;
+            let message = "Something went wrong!";
+            if (errorId === "EMAIL_EXISTS") {
+                message = "This email exists already!";
+            }
+            throw new Error(message);
         }
+
         const resData = await response.json();
         console.log(resData);
-        dispatch({ type: SIGNUP });
+        dispatch({
+            type: SIGNUP,
+            token: resData.idToken,
+            userId: resData.localId,
+        });
     };
 };
+
 export const login = (email, password) => {
     return async (dispatch) => {
         const response = await fetch(
@@ -43,20 +55,27 @@ export const login = (email, password) => {
                 }),
             }
         );
-        console.log("login", await response.json());
+
         if (!response.ok) {
             const errorResData = await response.json();
+            console.log("errorResData2---> \n", errorResData);
+
             const errorId = errorResData.error.message;
-            let message = "Something Went Wrong!";
+            let message = "Something went wrong!";
             if (errorId === "EMAIL_NOT_FOUND") {
-                message = "This Email coud not be found!";
+                message = "This email could not be found!";
             } else if (errorId === "INVALID_PASSWORD") {
                 message = "This password is not valid!";
             }
             throw new Error(message);
         }
+
         const resData = await response.json();
         console.log(resData);
-        dispatch({ type: LOGIN });
+        dispatch({
+            type: LOGIN,
+            token: resData.idToken,
+            userId: resData.localId,
+        });
     };
 };
