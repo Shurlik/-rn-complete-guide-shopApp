@@ -10,6 +10,13 @@ import ordersReducer from "./store/reducers/orders";
 import authReducer from "./store/reducers/auth";
 import NavigationContainer from "./navigation/NavigationContainer";
 import ReduxThunk from "redux-thunk";
+import * as Notifications from "expo-notifications";
+
+Notifications.setNotificationHandler({
+    handleNotification: async () => {
+        return { shouldShowAlert: true }; // allow show notifications in foreground mode
+    },
+});
 
 const rootReducer = combineReducers({
     products: productsReducer,
